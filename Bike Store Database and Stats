@@ -1,0 +1,30 @@
+CREATE TABLE bike_store (id INTEGER PRIMARY KEY, name TEXT, quantity INTEGER, aisle INTEGER, price INTEGER);
+
+INSERT INTO bike_store VALUES (1, "Red Bike", 10, 1, 50);
+INSERT INTO bike_store VALUES (2, "Yellow Bike", 14, 1, 40);
+INSERT INTO bike_store VALUES (3, "Orange Bike", 18, 2, 60);
+INSERT INTO bike_store VALUES (4, "Green Bike", 20, 2, 30);
+INSERT INTO bike_store VALUES (5, "Black Bike", 5, 3, 100);
+INSERT INTO bike_store VALUES (6, "Helmet", 12, 1, 52);
+INSERT INTO bike_store VALUES (7, "pump", 13, 1, 40);
+INSERT INTO bike_store VALUES (8, "Sun glasses", 17, 2, 35);
+INSERT INTO bike_store VALUES (9, "water bottle", 30, 2, 30);
+INSERT INTO bike_store VALUES (10, "Bike shoes", 11, 3, 90);
+
+--Basic select not including aisle--
+SELECT id, name, quantity, price 
+FROM bike_store;
+
+--Display the database ordered by price--
+SELECT * FROM bike_store
+ORDER BY price;
+
+--Display items over $50 ordered by quantity--
+SELECT * FROM bike_store 
+WHERE price > 50 
+ORDER BY quantity;
+
+--What are the most ordered items?--
+SELECT item, price, popularity
+FROM store
+ORDER BY popularity DESC;
