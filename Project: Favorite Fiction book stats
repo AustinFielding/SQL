@@ -1,0 +1,75 @@
+# For this project, I used the challenges/questions asked in Khan Academy on one of my favoirte books.
+# Then I created the table and created my own inserts.
+# Finally, I performed analytics on the data using SQL.
+
+/* Create table about the people and what they do here */
+/* Fictional Characters from THE LAND by Aleron Kong */
+CREATE TABLE persons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    level INTEGER);
+    
+INSERT INTO persons (fullname, level) VALUES ("Richter", "45");
+INSERT INTO persons (fullname, level) VALUES ("Sion", "19");
+INSERT INTO persons (fullname, level) VALUES ("Alma", "47");
+INSERT INTO persons (fullname, level) VALUES ("Terrod", "19");
+INSERT INTO persons (fullname, level) VALUES ("Elora", "22");
+
+CREATE table hobbies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id INTEGER,
+    skills TEXT);
+    
+INSERT INTO hobbies (person_id, skills) VALUES (1, "enchanting");
+INSERT INTO hobbies (person_id, skills) VALUES (1, "herb lore");
+INSERT INTO hobbies (person_id, skills) VALUES (1, "Beast Bonding");
+INSERT INTO hobbies (person_id, skills) VALUES (1, "Cloud Running");
+INSERT INTO hobbies (person_id, skills) VALUES (1, "Crafting Unconventional Materials");
+INSERT INTO hobbies (person_id, skills) VALUES (1, "Portal Construction");
+INSERT INTO hobbies (person_id, skills) VALUES (2, "archery");
+INSERT INTO hobbies (person_id, skills) VALUES (2, "light armor");
+INSERT INTO hobbies (person_id, skills) VALUES (3, "Psi Bond");
+INSERT INTO hobbies (person_id, skills) VALUES (3, "Brain Drain");
+INSERT INTO hobbies (person_id, skills) VALUES (3, "Psi Blast");
+INSERT INTO hobbies (person_id, skills) VALUES (4, "Gather information");
+INSERT INTO hobbies (person_id, skills) VALUES (4, "Small Blades");
+INSERT INTO hobbies (person_id, skills) VALUES (4, "Shields");
+INSERT INTO hobbies (person_id, skills) VALUES (5, "Life Magic");
+INSERT INTO hobbies (person_id, skills) VALUES (5, "Water Magic");
+INSERT INTO hobbies (person_id, skills) VALUES (5, "Air Magic");
+
+CREATE table friends (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person1_id INTEGER,
+    person2_id INTEGER);
+
+INSERT INTO friends (person1_id, person2_id)
+    VALUES (1, 2);
+INSERT INTO friends (person1_id, person2_id)
+    VALUES (3, 5);
+
+/*Unedited data looks like this*/
+-- Basic selects to show all the date --
+SELECT * FROM persons;
+SELECT * FROM hobbies;
+SELECT * FROM friends;
+
+/*Who is friends with who?*/
+-- A join to align the tables --
+SELECT a.fullname AS "Friend 1", b.fullname AS "Friend 2" FROM friends
+    JOIN persons a
+    ON a.id = friends.person1_id
+    JOIN persons b
+    ON b.id = friends.person2_id;
+
+/*Who has what skills?*/
+SELECT persons.fullname, hobbies.skills FROM persons
+    JOIN hobbies
+    ON persons.id = hobbies.person_id;
+    
+    
+/*What are Eloras skils?*/
+SELECT persons.fullname, hobbies.skills FROM persons
+    JOIN hobbies 
+    ON persons.id = hobbies.person_id
+    WHERE persons.fullname is "Elora";
