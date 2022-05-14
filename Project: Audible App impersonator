@@ -1,0 +1,34 @@
+# This was a final project for Khan Academy Certification I did
+# I created the table, and created inserts.
+# I played around with UPDATES and DELETES
+
+/* What does the app's SQL look like? */
+/*Audible App*/
+
+CREATE table books (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT,
+    Genre TEXT,
+    Author TEXT,
+    Rating TEXT,
+    RunTime INTEGER);
+    
+INSERT INTO books (author, title, genre, runtime, rating)
+    VALUES ("Aleron Kong", "The Land Founding", "LitRPG", "540", "5 stars");
+INSERT INTO books (author, title, genre, runtime, rating)
+    VALUES ("Aleron Kong", "The Land Forging", "LitRPG", "600", "5 stars");
+INSERT INTO books (author, title, genre, runtime, rating)
+    VALUES ("Eric Ugland", "Scamps & Scounndrels", "GameLit", "720", "4.9 stars");
+INSERT INTO books (author, title, genre, runtime, rating)
+    VALUES ("Dakota Krout", "Ritualist", "LitRPG", "630", "4.9 stars");
+    
+SELECT * FROM books;
+
+UPDATE books SET Rating = "5 Stars" WHERE id = 3;
+
+UPDATE books SET Rating = "5 Stars" WHERE id = 4;
+
+SELECT * FROM books;
+
+DELETE FROM books WHERE id = 4;
+
+SELECT * FROM books;
