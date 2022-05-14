@@ -826,12 +826,12 @@ SELECT * FROM pokemon
 WHERE Number > 0 and Number < 150;
 
 /* Which is your favorite? */
---Basic select on an exact pokemon--
+--I used a select for the relevant user from a database by name--
 SELECT * FROM pokemon 
 WHERE Name is "Mewtwo";
 
 /* If you could only take a handfull, which would you take? */
---A select that pulled the most powerful--
+--I used a select for the relevant user from a database by type--
 SELECT * FROM pokemon WHERE Number > 0 and Number < 722
     GROUP BY Number
     HAVING Legendary is "True";
