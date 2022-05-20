@@ -1,0 +1,146 @@
+# This was a fun game to use SQL to solve a murder mystery on this website: https://mystery.knightlab.com/
+
+# First I found out all tables in the database
+SELECT name 
+  FROM sqlite_master
+ where type = 'table' 
+/* Shows all tables under this database*/
+
+# Then I found out the structure within each table
+SELECT sql 
+  FROM sqlite_master
+ where name = 'crime_scene_report'
+/* Shows the structure for this table*/
+
+
+Database: 
+sqlite_master
+
+Tables:
+crime_scene_report
+drivers_license
+person
+facebook_event_checkin
+interview
+get_fit_now_member
+get_fit_now_check_in
+income
+solution
+
+##Only peice of information given:
+You vaguely remember that the crime was a ​murder​ that occurred sometime on ​Jan.15, 2018​ 
+and that it took place in ​SQL City.
+
+Step 1:
+SELECT * FROM crime_scene_report 
+WHERE date = '20180115' and type = 'murder' and city = 'SQL City';
+Answer:
+Security footage shows that there were 2 witnesses. The first witness lives at the last house on "Northwestern Dr". 
+The second witness, named Annabel, lives somewhere on "Franklin Ave".	SQL City
+
+SELECT name, address_number, address_street_name FROM person
+WHERE address_street_name = 'Northwestern Dr'
+ORDER BY address_number ASC;
+Answer:
+Witness 1: 
+Morty Schapiro at 4919 Northwestern Dr
+
+SELECT * FROM person
+WHERE name = 'Morty Schapiro';
+Answer:
+ID: 14887
+Name: Morty Schapiro
+license_id: 118009
+SSN: 111564949
+
+SELECT name, address_number, address_street_name FROM person
+WHERE address_street_name = 'Franklin Ave' and name like "%Annabel%";
+Answer: Witness 2:
+Annabel Miller 103 Franklin Ave
+
+SELECT * FROM person
+WHERE name = 'Annabel Miller';
+Answer:
+Name: Annabel Miller
+license_id: 490173
+SSN: 318771143
+
+Annabels interview:
+SELECT * FROM interview
+WHERE person_id = 16371;
+Answer: I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th.
+
+Morty's interview:
+SELECT * FROM interview
+WHERE person_id = 14887;
+Answer: I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. 
+The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W".
+
+SELECT * FROM get_fit_now_check_in
+Where check_in_date is '20180109'
+AND membership_id LIKE '%48z%';
+Answers:
+48Z7A
+48Z55
+
+SELECT * FROM get_fit_now_member
+Where id is '48Z55' OR id is '48Z7A';
+Answers:
+48Z7A - 28819 - Joe Germuska - 20160305 - gold
+48Z55 - 67318 - Jeremy Bowers - 20160101 - gold
+
+SELECT * FROM person
+Where id is '67318' OR id is '28819';
+Answers:
+id	name	license_id	address_number	address_street_name	ssn
+67318	Jeremy Bowers	423327	530	Washington Pl, Apt 3A		871539279
+28819	Joe Germuska	173289	111	Fisk Rd				138909730
+
+SELECT * FROM drivers_license
+Where id is '423327' OR id is '173289';
+id	age	height	eye_color	hair_color	gender	plate_number	car_make	car_model
+423327	30	70	brown	brown	male	0H42W2	Chevrolet	Spark LS
+
+##First guess on the murder
+INSERT INTO solution VALUES (1, 'Jeremy Bowers');
+SELECT value FROM solution;
+
+Answer: Congrats, you found the murderer! 
+But wait, there's more... If you think you're up for a challenge, 
+try querying the interview transcript of the murderer to find the real villain behind this crime. 
+If you feel especially confident in your SQL skills, try to complete this final step with no more than 2 queries. 
+Use this same INSERT statement with your new suspect to check your answer.
+
+## Now I have to find the "real villain"
+SELECT * FROM interview
+Where person_id is '67318';
+
+Answer:
+I was hired by a woman with a lot of money. I don't know her name but I know she's around 5'5" (65") or 5'7" (67"). 
+She has red hair and she drives a Tesla Model S. I know that she attended the SQL Symphony Concert 3 times in December 2017.
+
+
+Select * FROM drivers_license WHERE car_model = 'Model S' AND gender = 'female';
+id	age	height	eye_color	hair_color	gender	plate_number	car_make	car_model
+202298	68	66	green	red	female	500123	Tesla	Model S
+291182	65	66	blue	red	female	08CM64	Tesla	Model S
+682231	51	80	green	grey	female	3Z0M62	Tesla	Model S
+918773	48	65	black	red	female	917UU3	Tesla	Model S
+
+Select * FROM person WHERE license_id = 202298
+Answer:
+id	name	license_id	address_number	address_street_name	ssn
+99716	Miranda Priestly	202298	1883	Golden Ave	987756388
+
+SELECT * FROM income WHERE SSN = 961388910 278K
+SELECT * FROM income WHERE SSN = 337169072 ?
+SELECT * FROM income WHERE SSN = 987756388 310K (highest)
+
+##Found her :)
+INSERT INTO solution VALUES (1, 'Miranda Priestly');
+SELECT value FROM solution;
+
+Answer: 
+Congrats, you found the brains behind the murder! Everyone in SQL City hails you as the greatest SQL detective of all time. 
+Time to break out the champagne!
+
